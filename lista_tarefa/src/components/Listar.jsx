@@ -4,19 +4,24 @@ import './Listar.css'
 export default function Listar() {
   const [tarefa, setTarefa] = useState('')
   const [categoria, setCategoria] = useState('')
+  const [filtroCategoria, setFiltroCategoria] = useState('Todas')
   const [lista, setLista] = useState([])
+
   const [editandoId, setEditandoId] = useState(null)
   const [novoTexto, setNovoTexto] = useState('')
   const [novaCategoria, setNovaCategoria] = useState('')
 
   function adicionarTarefa(e) {
     e.preventDefault()
-    if (tarefa === '' || categoria === '') return
+    if (tarefa.trim() === '' || categoria.trim() === '') {
+      alert('Preencha todos os campos para adicionar uma tarefa.')
+      return
+    }
     const nova = {
       id: lista.length + 1,
       texto: tarefa,
       categoria: categoria,
-      status: 'Pendente'
+      status: 'pendente'
     }
     setLista([...lista, nova])
     setTarefa('')
@@ -35,15 +40,27 @@ export default function Listar() {
     setLista(novaLista)
   }
 
-  function mover(index, direcao) {
-    const nova = [...lista]
+  function mover(id, direcao, categoriaAtual) {
+    const tarefasDaCategoria = lista.filter(t => t.categoria === categoriaAtual)
+    const index = tarefasDaCategoria.findIndex(t => t.id === id)
     const pos = index + direcao
-    if (pos < 0 || pos >= lista.length) return
-    const temp = nova[index]
-    nova[index] = nova[pos]
-    nova[pos] = temp
-    setLista(nova)
+
+    if (index === -1 || pos < 0 || pos >= tarefasDaCategoria.length) return
+
+    const id1 = tarefasDaCategoria[index].id
+    const id2 = tarefasDaCategoria[pos].id
+
+    const novaLista = [...lista]
+    const idx1 = novaLista.findIndex(t => t.id === id1)
+    const idx2 = novaLista.findIndex(t => t.id === id2)
+
+    const temp = novaLista[idx1]
+    novaLista[idx1] = novaLista[idx2]
+    novaLista[idx2] = temp
+
+    setLista(novaLista)
   }
+
 
   function resetar() {
     setLista([])
@@ -56,6 +73,10 @@ export default function Listar() {
   }
 
   function salvarEdicao(id) {
+    if (novoTexto.trim() === '' || novaCategoria.trim() === '') {
+      alert('Preencha todos os campos para salvar a edição.')
+      return
+    }
     const novaLista = lista.map(t =>
       t.id === id ? { ...t, texto: novoTexto, categoria: novaCategoria } : t
     )
@@ -65,6 +86,14 @@ export default function Listar() {
     setNovaCategoria('')
   }
 
+  const categoriasUnicas = [...new Set(lista.map(t => t.categoria))]
+  const listaFiltrada =
+    filtroCategoria === 'Todas'
+      ? lista
+      : lista.filter(t => t.categoria === filtroCategoria)
+  const categoriasParaMostrar =
+    filtroCategoria === 'Todas' ? categoriasUnicas : [filtroCategoria]
+
   return (
     <div className="lista-container">
       <h2>Lista de Tarefas</h2>
@@ -72,61 +101,66 @@ export default function Listar() {
       <form onSubmit={adicionarTarefa}>
         <div>
           <label>Tarefa:</label>
-          <input
-            type="text"
-            value={tarefa}
-            onChange={e => setTarefa(e.target.value)}
-            placeholder="Digite a tarefa"
-          />
+          <input type="text" value={tarefa} onChange={e => setTarefa(e.target.value)} placeholder="Digite a tarefa"/>
         </div>
         <div>
           <label>Categoria:</label>
-          <input
-            type="text"
-            value={categoria}
-            onChange={e => setCategoria(e.target.value)}
-            placeholder="Ex: estudo, casa, trabalho"
-          />
+          <input type="text" value={categoria} onChange={e => setCategoria(e.target.value)} placeholder="Ex: estudo, casa, trabalho"/>
         </div>
         <button type="submit">Adicionar</button>
       </form>
 
       <button onClick={resetar}>Limpar Tudo</button>
 
-      <ul>
-        {lista.map((item, i) => (
-          <li key={item.id}>
-            {editandoId === item.id ? (
-              <>
-                <input
-                  type="text"
-                  value={novoTexto}
-                  onChange={e => setNovoTexto(e.target.value)}
-                />
-                <input
-                  type="text"
-                  value={novaCategoria}
-                  onChange={e => setNovaCategoria(e.target.value)}
-                />
-                <button onClick={() => salvarEdicao(item.id)}>💾 Salvar</button>
-              </>
-            ) : (
-              <>
-                <span>{item.texto} — {item.status} — {item.categoria}</span>
-                <div>
-                  <button onClick={() => atualizarStatus(item.id, 'Concluída')}>✅</button>
-                  <button onClick={() => atualizarStatus(item.id, 'Não realizada')}>❌</button>
-                  <button onClick={() => atualizarStatus(item.id, 'Pendente')}>⏳</button>
-                  <button onClick={() => excluirTarefa(item.id)}>🗑️</button>
-                  <button onClick={() => iniciarEdicao(item)}>✏️ Editar</button>
-                  <button onClick={() => mover(i, -1)}>▲</button>
-                  <button onClick={() => mover(i, +1)}>▼</button>
-                </div>
-              </>
-            )}
-          </li>
+      <div>
+        <label>Filtrar por categoria: </label>
+        <select value={filtroCategoria} onChange={e => setFiltroCategoria(e.target.value)}>
+          <option value="Todas">Todas</option>
+          {categoriasUnicas.map(cat => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="categorias-container">
+        {categoriasParaMostrar.map(cat => (
+          <div key={cat} className="categoria-bloco">
+            <h3 style={{ fontWeight: 'bold' }}>{cat}</h3>
+            <ul>
+              {lista.filter(t => t.categoria === cat).map((item, i) => (
+                  <li key={item.id} className="tarefa">
+                    {editandoId === item.id ? (
+                      <>
+                        <input type="text" value={novoTexto} onChange={e => setNovoTexto(e.target.value)}/>
+                        <input type="text" value={novaCategoria} onChange={e => setNovaCategoria(e.target.value)}/>
+                        <button onClick={() => salvarEdicao(item.id)}>Salvar</button>
+                      </>
+                    ) : (
+                      <>
+                        <span>
+                          {item.texto} — {item.status}
+                        </span>
+                        <div className='bts-tarefa'>
+                          <button onClick={() => atualizarStatus(item.id, 'realizada')}>✅</button>
+                          <button onClick={() => atualizarStatus(item.id, 'nao realizada')}>❌</button>
+                          <button onClick={() => atualizarStatus(item.id, 'pendente')}>⏳</button>
+                          <button onClick={() => excluirTarefa(item.id)}>🗑️</button>
+                          <button onClick={() => iniciarEdicao(item)}>✏️</button>
+                          <div className="mover">
+                            <button onClick={() => mover(item.id, -1, cat)}>▲</button>
+                            <button onClick={() => mover(item.id, +1, cat)}>▼</button>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </li>
+                ))}
+            </ul>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   )
 }

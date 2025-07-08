@@ -1,82 +1,178 @@
-body {
-  font-family: sans-serif;
-  background-color: #f9f7fc;
+/* Ocupa toda a tela */
+body, html {
   margin: 0;
-  padding: 20px;
+  padding: 0;
+  height: 100%;
 }
 
-h2 {
-  text-align: center;
-  color: #5c4d7d;
+/* Container principal */
+.lista-container {
+  min-height: 100vh;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
 }
 
+/* Título */
+.lista-container h2 {
+  color: #6a1b9a;
+  font-size: 2rem;
+}
+
+/* Formulário de entrada */
 form {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 1rem;
+  background-color: #ffffff;
+  padding: 1rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-input[type="text"] {
-  padding: 8px;
-  width: 200px;
-  border: 1px solid #bbaed1;
-  border-radius: 5px;
+form label {
+  font-weight: bold;
+  width: 100%;
+  color: #7b1fa2;
 }
 
-input[type="submit"] {
-  padding: 6px 10px;
-  border: none;
-  border-radius: 5px;
-  background-color: #8e79b9;
+form input {
+  padding: 0.6rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  flex: 1 1 250px;
+}
+
+form button {
+  background-color: #f48fb1;
   color: white;
-  cursor: pointer;
-}
-
-button {
-  padding: 6px 10px;
   border: none;
-  border-radius: 5px;
-  background-color: #dcd2ec;
-  color: #4b3e67;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
   cursor: pointer;
-  margin: 2px;
+  font-weight: bold;
+  transition: background 0.3s;
 }
 
-button:hover {
-  background-color: #c3b2e0;
+form button:hover {
+  background-color: #ec407a;
 }
 
+/* Botão de reset */
+.lista-container > button {
+  background-color: #d81b60;
+  color: white;
+  padding: 0.5rem 1.2rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.lista-container > button:hover {
+  background-color: #ad1457;
+}
+
+/* Filtro */
+.lista-container select {
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* Mensagem de erro como alerta */
+.erro {
+  display: none; /* não usado pois usamos alert() */
+}
+
+/* Layout horizontal para categorias */
+.categorias-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 10px 0;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+/* Cada categoria em uma coluna */
+.categoria-bloco {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  background: #fafafa;
+  max-height: 400px;
+  width: 50%;
+  overflow-y: auto;
+}
+
+/* Título da categoria */
+.categoria-bloco h3 {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #4a148c;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* Lista de tarefas */
 ul {
   list-style: none;
   padding: 0;
-  max-width: 400px;
-  margin: 0 auto;
+  margin: 0;
 }
 
-li {
-  background-color: #fff;
+/* Cada tarefa */
+.tarefa {
+  background-color: #f3e5f5;
+  margin-bottom: 10px;
   padding: 10px;
-  margin-bottom: 8px;
-  border-radius: 5px;
-  border-left: 5px solid #a086c3;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  box-shadow: 0 2px 5px rgba(160, 134, 195, 0.2);
+  gap: 8px;
 }
 
-li em {
-  color: #7c6a99;
-  font-size: 0.9em;
+/* Texto da tarefa */
+.tarefa span {
+  font-size: 1rem;
+  color: #333;
 }
 
-li div {
+/* Botões da tarefa */
+.tarefa > div {
   display: flex;
-  gap: 5px;
   flex-wrap: wrap;
+  gap: 6px;
 }
 
-.lista-container {
-  padding: 20px;
+/* Botões padrão */
+.tarefa button {
+  padding: 0.4rem 0.6rem;
+  font-size: 1rem;
+  border:  #ce93d8;
+  border-radius: 8px;
+  color: #4a148c;
+  cursor: pointer;
+
+}
+
+.tarefa button:hover {
+  background-color: #c98ad4;
+}
+
+/* Botões de mover vertical */
+.mover {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.bts-tarefa {
+  flex-direction: row;
 }
