@@ -6,15 +6,15 @@ export default function Listar() {
   const [categoria, setCategoria] = useState('')
   const [lista, setLista] = useState([])
 
-  // p saber qual tarefa está em sendo editada
+  // Para saber qual tarefa está em sendo editada
   const [Ideditando, setIdEditando] = useState(null)
   const [novoTexto, setNovoTexto] = useState('')
   const [novaCategoria, setNovaCategoria] = useState('')
 
-  // função p adicionar uma nova tarefa
+  // Função pra adicionar uma nova tarefa
   function adicionarTarefa(e) {
     e.preventDefault()
-    // checar se o usuário deixou tarefa ou categoria vazios
+    // Checar se o usuário deixou tarefa ou categoria vazios
     if (tarefa.trim() === '' || categoria.trim() === '') {
       alert('Preencha todos os campos para adicionar uma tarefa.')
       return
@@ -27,47 +27,47 @@ export default function Listar() {
       status: 'Pendente'
     }
 
-    // atualiza o estado da lista sem mudar o que já tinha antes, só adicionando a nova tarefa
+    // Atualiza o estado da lista sem mudar o que já tinha antes, só adicionando a nova tarefa
     setLista([...lista, nova])
-    // p limpar os inputs
+    // Para limpar os inputs
     setTarefa('')
     setCategoria('')
   }
 
-  // função p atualizar o status da tarefa
+  // Função pra atualizar o status da tarefa
   function atualizarStatus(id, novoStatus) {
-    // crio uma nova lista, mas só atualizo o item que bate com o id
+    // Cria uma nova lista, mas só atualiza o item que bate com o id
     const novas = lista.map(tarefa =>
       tarefa.id === id ? { ...tarefa, status: novoStatus } : t
     )
     setLista(novas)
   }
 
-  // função p excluir uma tarefa
+  // Função pra excluir uma tarefa
   function excluirTarefa(id) {
-    // filtra e cria uma nova lista sem a tarefa que tem esse id
+    // Filtra e cria uma nova lista sem a tarefa que tem esse id
     const novaLista = lista.filter(tarefa => tarefa.id !== id)
     setLista(novaLista)
   }
 
-  // função p mover a tarefa de lugar
+  // Função para mover a tarefa de lugar
   function mover(id, direcao, categoriaAtual) {
-    // p pegar só as que pertencem à categoria atual
+    // Para pegar só as que pertencem à categoria atual
     const tarefasDaCategoria = lista.filter(tarefa => tarefa.categoria === categoriaAtual)
-    // p descobrir a posição da tarefa na categoria
+    // Para descobrir a posição da tarefa na categoria
     const index = tarefasDaCategoria.findIndex(tarefa => tarefa.id === id)
     const novaPosicao = index + direcao // nova posição que quero trocar
 
-    // Se estiver fora dos limites (começo ou fim da lista), não faz nada
+    // Se a posição estiver fora dos limites (começo ou fim da lista) não faz nada
     if (index === -1 || novaPosicao < 0 || novaPosicao >= tarefasDaCategoria.length) return
 
-    // Id das duas tarefas que vão trocar de posição
+    // Id das tarefas que vão trocar de posição
     const id1 = tarefasDaCategoria[index].id
     const id2 = tarefasDaCategoria[novaPosicao].id
 
-    // Crio uma cópia da lista original para trocar a posição dos itens
+    // Cria uma cópia da lista inicial para mudar a posição dos itens
     const novaLista = [...lista]
-    // Encontro os índices na lista geral para trocar
+    // Encontra os índices na lista geral para mudar a posição
     const idx1 = novaLista.findIndex(t => t.id === id1)
     const idx2 = novaLista.findIndex(t => t.id === id2)
 
@@ -76,35 +76,35 @@ export default function Listar() {
     novaLista[idx1] = novaLista[idx2]
     novaLista[idx2] = temp
 
-    // Atualizo o estado com a lista já alterada
+    // Atualiza o estado da lista modificada
     setLista(novaLista)
   }
 
-  // Função simples pra resetar a lista, limpa tudo
+  // Função pra resetar a lista limpando tudo
   function resetar() {
     setLista([])
   }
 
   // Quando o usuário clica pra editar uma tarefa, essa função seta os estados de edição
   function iniciarEdicao(tarefa) {
-    setIdEditando(tarefa.id) // marco qual tarefa está editando
-    setNovoTexto(tarefa.texto) // preencho o texto que vai ser editado
-    setNovaCategoria(tarefa.categoria) // preencho a categoria que vai ser editada
+    setIdEditando(tarefa.id) // Marca qual tarefa vai ser editada
+    setNovoTexto(tarefa.texto) // Preenche o texto que vai ser editado
+    setNovaCategoria(tarefa.categoria) // Preenche a categoria que vai ser editada
   }
 
-  // Quando o usuário salva a edição, atualizo a tarefa na lista
+  // Quando o usuário salvar a edição a tarefa é editada na lista
   function salvarEdicao(id) {
     const novaLista = lista.map(t =>
       t.id === id ? { ...t, texto: novoTexto, categoria: novaCategoria } : t
     )
     setLista(novaLista)
-    // Limpo os estados de edição, saio do modo edição
+    // Limpa os estados de edição e sai do local de editar
     setIdEditando(null)
     setNovoTexto('')
     setNovaCategoria('')
   }
 
-  //  mostra os blocos das categorias que existem na lista
+  //  Mostra os blocos das categorias que existem na lista
   const categoriasParaMostrar = [...new Set(lista.map(t => t.categoria))]
 
 
@@ -113,7 +113,7 @@ export default function Listar() {
       <div className="topo">
         <h2>Lista de Tarefas</h2>
 
-        {/* Form pra adicionar tarefa */}
+        {/* Formulário pra adicionar as tarefas */}
         <form onSubmit={adicionarTarefa}>
           <div>
             <label>Tarefa:</label>
@@ -137,16 +137,16 @@ export default function Listar() {
         </form>
       </div>
 
-      {/* Botão que limpa tudo */}
+      {/* Botão com a função de resetar que limpa tudo */}
       <button onClick={resetar}>Limpar Tudo</button>
 
-      {/* Aqui mostro as categorias, cada uma com sua lista de tarefas */}
+      {/* Aqui mostra as categorias, cada uma com suas respectivas tarefas */}
       <div className="categorias-container">
         {categoriasParaMostrar.map(cat => (
           <div key={cat} className="categoria-bloco">
             <h3 style={{ fontWeight: 'bold' }}>{cat}</h3>
             <ul>
-              {/* Listo só as tarefas da categoria atual */}
+              {/* Lista só as tarefas da categoria atual */}
               {lista
                 .filter(t => t.categoria === cat)
                 .map((item, i) => (
@@ -162,7 +162,7 @@ export default function Listar() {
                   >
                     {Ideditando === item.id ? (
                       <>
-                        {/* Se estiver editando, mostro inputs para editar texto e categoria */}
+                        {/* Se estiver editando, mostra os inputs para editar texto e categoria */}
                         <input
                           type="text"
                           value={novoTexto}
@@ -177,7 +177,7 @@ export default function Listar() {
                       </>
                     ) : (
                       <>
-                        {/* Senão, mostro a tarefa normal */}
+                        {/* Senão, mostra a tarefa normal */}
                         <span>
                           {item.texto} — {item.status}
                         </span>
