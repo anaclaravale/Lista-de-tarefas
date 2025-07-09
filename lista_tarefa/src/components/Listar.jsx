@@ -61,7 +61,6 @@ export default function Listar() {
     setLista(novaLista)
   }
 
-
   function resetar() {
     setLista([])
   }
@@ -73,10 +72,6 @@ export default function Listar() {
   }
 
   function salvarEdicao(id) {
-    if (novoTexto.trim() === '' || novaCategoria.trim() === '') {
-      alert('Preencha todos os campos para salvar a edição.')
-      return
-    }
     const novaLista = lista.map(t =>
       t.id === id ? { ...t, texto: novoTexto, categoria: novaCategoria } : t
     )
@@ -87,42 +82,27 @@ export default function Listar() {
   }
 
   const categoriasUnicas = [...new Set(lista.map(t => t.categoria))]
-  const listaFiltrada =
-    filtroCategoria === 'Todas'
-      ? lista
-      : lista.filter(t => t.categoria === filtroCategoria)
   const categoriasParaMostrar =
     filtroCategoria === 'Todas' ? categoriasUnicas : [filtroCategoria]
 
   return (
     <div className="lista-container">
-      <h2>Lista de Tarefas</h2>
-
-      <form onSubmit={adicionarTarefa}>
-        <div>
-          <label>Tarefa:</label>
-          <input type="text" value={tarefa} onChange={e => setTarefa(e.target.value)} placeholder="Digite a tarefa"/>
-        </div>
-        <div>
-          <label>Categoria:</label>
-          <input type="text" value={categoria} onChange={e => setCategoria(e.target.value)} placeholder="Ex: estudo, casa, trabalho"/>
-        </div>
-        <button type="submit">Adicionar</button>
-      </form>
+      <div className="topo">
+        <h2>Lista de Tarefas</h2>
+        <form onSubmit={adicionarTarefa}>
+          <div>
+            <label>Tarefa:</label>
+            <input type="text" value={tarefa} onChange={e => setTarefa(e.target.value)} placeholder="Digite a tarefa"/>
+          </div>
+          <div>
+            <label>Categoria:</label>
+            <input type="text" value={categoria} onChange={e => setCategoria(e.target.value)} placeholder="Ex: estudo, casa, trabalho"/>
+          </div>
+          <button type="submit">Adicionar</button>
+        </form>
+      </div>
 
       <button onClick={resetar}>Limpar Tudo</button>
-
-      <div>
-        <label>Filtrar por categoria: </label>
-        <select value={filtroCategoria} onChange={e => setFiltroCategoria(e.target.value)}>
-          <option value="Todas">Todas</option>
-          {categoriasUnicas.map(cat => (
-            <option key={cat} value={cat}>
-              {cat}
-            </option>
-          ))}
-        </select>
-      </div>
 
       <div className="categorias-container">
         {categoriasParaMostrar.map(cat => (
@@ -130,7 +110,7 @@ export default function Listar() {
             <h3 style={{ fontWeight: 'bold' }}>{cat}</h3>
             <ul>
               {lista.filter(t => t.categoria === cat).map((item, i) => (
-                  <li key={item.id} className="tarefa">
+                  <li key={item.id} className={`tarefa ${ item.status === 'Concluída' ? 'concluida' : item.status === 'Não realizada' ? 'nao-realizada' : 'pendente'}`}>
                     {editandoId === item.id ? (
                       <>
                         <input type="text" value={novoTexto} onChange={e => setNovoTexto(e.target.value)}/>

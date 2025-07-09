@@ -2,26 +2,24 @@
 body, html {
   margin: 0;
   padding: 0;
-  height: 100%;
+  width: 100%;
   font-family: Arial, sans-serif;
   background-color: #f3f0f9;
-  overflow-x: hidden;
+  overflow: auto;
 }
 
 /* Container principal */
 .lista-container {
-  max-width: 1200px;
+  width: 80%;
+  height: 100%;
   margin: 0 auto;
+  margin-top: -25%;
   padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
-  background-color: #e0d7f8;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  position: relative;
-  overflow: hidden;
+  position: fixed;
+
 }
 
 /* Título */
@@ -33,11 +31,10 @@ body, html {
 /* Formulário de entrada */
 form {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   width: 100%;
   max-width: 600px;
-  gap: 1rem;
-  background-color: #ffffff;
+  background-color: white;
   padding: 2rem;
   border-radius: 16px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -45,7 +42,6 @@ form {
 
 form .campo {
   display: flex;
-  align-items: center;
   gap: 10px;
   width: 100%;
 }
@@ -59,37 +55,41 @@ form label {
 form input {
   padding: 0.8rem;
   border-radius: 10px;
-  border: 1px solid #ccc;
-  width: 100%;
+  border: 1px solid rgb(184, 184, 184);
+  width: 80%;
   font-size: 1rem;
 }
 
 form button {
-  background-color: #f48fb1;
+  background-color: #d81b60;
   color: white;
   border: none;
-  padding: 0.8rem 1rem;
+  height: 45px;
   border-radius: 10px;
   cursor: pointer;
   font-weight: bold;
   font-size: 1rem;
-  transition: background 0.3s;
+  transition:  0.3s;
+  margin-top: 23px;
 }
 
 form button:hover {
-  background-color: #ec407a;
+  background-color: #ad1457;
 }
 
 /* Botão de reset */
 .lista-container > button {
   background-color: #d81b60;
   color: white;
-  padding: 0.6rem 1.4rem;
+  height: 45px;
   border-radius: 10px;
   border: none;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: 0.3s;
   font-size: 1rem;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .lista-container > button:hover {
@@ -100,7 +100,7 @@ form button:hover {
 .lista-container select {
   padding: 0.6rem;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid rgb(184, 184, 184);
   font-size: 1rem;
   text-align: center;
   display: block;
@@ -120,14 +120,15 @@ form button:hover {
 
 /* Cada categoria em uma coluna */
 .categoria-bloco {
-  flex: 1 1 30%;
   min-width: 280px;
   max-width: 350px;
-  border: 1px solid #ccc;
+  height: 200px;
+  border: 1px solid rgb(184, 184, 184);
   border-radius: 10px;
-  background: #fafafa;
+  background-color: white;
   padding: 10px;
   position: relative;
+  overflow-y: auto;
 }
 
 /* Barra colorida no topo */
@@ -159,6 +160,7 @@ ul {
   list-style: none;
   padding: 0;
   margin: 0;
+
 }
 
 /* Cada tarefa */
@@ -170,6 +172,7 @@ ul {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  border: 1px solid rgb(184, 184, 184);
 }
 
 .tarefa[data-status='realizada'] {
@@ -205,7 +208,7 @@ ul {
   border-radius: 8px;
   color: #fff;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: 0.3s;
 }
 
 .tarefa button:hover {
@@ -214,19 +217,24 @@ ul {
 
 /* Cores por ação */
 .tarefa button:nth-child(1) {
-  background-color: #4caf50;
+  background-color: rgb(104, 158, 104);
+  border: 1px solid gray;
 }
 .tarefa button:nth-child(2) {
-  background-color: #f44336;
+  background-color: rgb(255, 131, 131);
+  border: 1px solid gray;
 }
 .tarefa button:nth-child(3) {
-  background-color: #ff9800;
+  background-color: rgb(255, 206, 115);
+  border: 1px solid gray;
 }
 .tarefa button:nth-child(4) {
-  background-color: #9c27b0;
+  background-color: rgb(196, 196, 196);
+  border: 1px solid gray;
 }
 .tarefa button:nth-child(5) {
-  background-color: #2196f3;
+  background-color: rgb(132, 192, 233);
+  border: 1px solid gray;
 }
 
 /* Botões de mover vertical */
@@ -238,4 +246,16 @@ ul {
 
 .bts-tarefa {
   flex-direction: row;
+}
+
+.tarefa.concluida {
+  background-color: rgb(195, 241, 195);
+}
+
+.tarefa.nao-realizada {
+  background-color: rgb(255, 211, 211);
+}
+
+.tarefa.pendente {
+  background-color: rgb(255, 255, 193);
 }
