@@ -21,7 +21,7 @@ export default function Listar() {
       id: lista.length + 1,
       texto: tarefa,
       categoria: categoria,
-      status: 'pendente'
+      status: 'Pendente'
     }
     setLista([...lista, nova])
     setTarefa('')
@@ -143,9 +143,9 @@ export default function Listar() {
                           {item.texto} — {item.status}
                         </span>
                         <div className='bts-tarefa'>
-                          <button onClick={() => atualizarStatus(item.id, 'realizada')}>✅</button>
-                          <button onClick={() => atualizarStatus(item.id, 'nao realizada')}>❌</button>
-                          <button onClick={() => atualizarStatus(item.id, 'pendente')}>⏳</button>
+                          <button onClick={() => atualizarStatus(item.id, 'Concluída')}>✅</button>
+                          <button onClick={() => atualizarStatus(item.id, 'Não realizada')}>❌</button>
+                          <button onClick={() => atualizarStatus(item.id, 'Pendente')}>⏳</button>
                           <button onClick={() => excluirTarefa(item.id)}>🗑️</button>
                           <button onClick={() => iniciarEdicao(item)}>✏️</button>
                           <div className="mover">

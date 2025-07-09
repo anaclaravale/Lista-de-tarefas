@@ -3,57 +3,76 @@ body, html {
   margin: 0;
   padding: 0;
   height: 100%;
+  font-family: Arial, sans-serif;
+  background-color: #f3f0f9;
+  overflow-x: hidden;
 }
 
 /* Container principal */
 .lista-container {
-  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2rem;
+  background-color: #e0d7f8;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
 }
 
 /* Título */
 .lista-container h2 {
-  color: #6a1b9a;
-  font-size: 2rem;
+  color: #4a148c;
+  font-size: 2.5rem;
 }
 
 /* Formulário de entrada */
 form {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  max-width: 600px;
   gap: 1rem;
   background-color: #ffffff;
-  padding: 1rem;
+  padding: 2rem;
   border-radius: 16px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+form .campo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
 form label {
   font-weight: bold;
-  width: 100%;
-  color: #7b1fa2;
+  color: #6a1b9a;
+  min-width: 90px;
 }
 
 form input {
-  padding: 0.6rem;
+  padding: 0.8rem;
   border-radius: 10px;
   border: 1px solid #ccc;
-  flex: 1 1 250px;
+  width: 100%;
+  font-size: 1rem;
 }
 
 form button {
   background-color: #f48fb1;
   color: white;
   border: none;
-  padding: 0.6rem 1rem;
+  padding: 0.8rem 1rem;
   border-radius: 10px;
   cursor: pointer;
   font-weight: bold;
+  font-size: 1rem;
   transition: background 0.3s;
 }
 
@@ -65,11 +84,12 @@ form button:hover {
 .lista-container > button {
   background-color: #d81b60;
   color: white;
-  padding: 0.5rem 1.2rem;
+  padding: 0.6rem 1.4rem;
   border-radius: 10px;
   border: none;
   cursor: pointer;
   transition: background 0.3s;
+  font-size: 1rem;
 }
 
 .lista-container > button:hover {
@@ -78,36 +98,50 @@ form button:hover {
 
 /* Filtro */
 .lista-container select {
-  padding: 0.5rem;
+  padding: 0.6rem;
   border-radius: 8px;
   border: 1px solid #ccc;
-}
-
-/* Mensagem de erro como alerta */
-.erro {
-  display: none; /* não usado pois usamos alert() */
+  font-size: 1rem;
+  text-align: center;
+  display: block;
+  margin: 0 auto;
 }
 
 /* Layout horizontal para categorias */
 .categorias-container {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
   gap: 20px;
-  overflow-x: auto;
-  padding: 10px 0;
+  padding: 20px;
+  justify-content: center;
   width: 100%;
-  justify-content: flex-start;
+  position: relative;
 }
 
 /* Cada categoria em uma coluna */
 .categoria-bloco {
+  flex: 1 1 30%;
+  min-width: 280px;
+  max-width: 350px;
   border: 1px solid #ccc;
   border-radius: 10px;
-  padding: 10px;
   background: #fafafa;
-  max-height: 400px;
-  width: 50%;
-  overflow-y: auto;
+  padding: 10px;
+  position: relative;
+}
+
+/* Barra colorida no topo */
+.categoria-bloco::before {
+  content: '';
+  display: block;
+  height: 6px;
+  width: 100%;
+  background: linear-gradient(to right, #7b1fa2, #f06292);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 /* Título da categoria */
@@ -116,6 +150,7 @@ form button:hover {
   font-size: 1.2rem;
   color: #4a148c;
   text-align: center;
+  margin-top: 1.5rem;
   margin-bottom: 1rem;
 }
 
@@ -128,7 +163,6 @@ ul {
 
 /* Cada tarefa */
 .tarefa {
-  background-color: #f3e5f5;
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 10px;
@@ -136,6 +170,18 @@ ul {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.tarefa[data-status='realizada'] {
+  background-color: #c3ffc3;
+}
+
+.tarefa[data-status='nao realizada'] {
+  background-color: #f8d7da;
+}
+
+.tarefa[data-status='pendente'] {
+  background-color: #fff3cd;
 }
 
 /* Texto da tarefa */
@@ -155,15 +201,32 @@ ul {
 .tarefa button {
   padding: 0.4rem 0.6rem;
   font-size: 1rem;
-  border:  #ce93d8;
+  border: none;
   border-radius: 8px;
-  color: #4a148c;
+  color: #fff;
   cursor: pointer;
-
+  transition: background 0.3s;
 }
 
 .tarefa button:hover {
-  background-color: #c98ad4;
+  opacity: 0.8;
+}
+
+/* Cores por ação */
+.tarefa button:nth-child(1) {
+  background-color: #4caf50;
+}
+.tarefa button:nth-child(2) {
+  background-color: #f44336;
+}
+.tarefa button:nth-child(3) {
+  background-color: #ff9800;
+}
+.tarefa button:nth-child(4) {
+  background-color: #9c27b0;
+}
+.tarefa button:nth-child(5) {
+  background-color: #2196f3;
 }
 
 /* Botões de mover vertical */
